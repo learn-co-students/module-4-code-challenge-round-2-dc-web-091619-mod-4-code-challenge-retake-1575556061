@@ -11,17 +11,26 @@ const BotSelector = props => {
         <p>
           health: <strong>50</strong>
         </p>
-        <input type="range" value="50" name="health" step="1" />
+        <input type="range" name="health" step="1" />
       </div>
 
       <div className="row">
         <p>
-          armor: <strong>30</strong>
+          armor: <strong>50</strong>
         </p>
-        <input type="range" value="30" name="armor" step="1" />
+        <input type="range" name="armor" step="1" />
       </div>
 
-      <h3>Import bots meeting this criteria</h3>
+      <div className="row">
+        <p>
+          damage: <strong>50</strong>
+        </p>
+        <input type="range" name="damage" step="1" />
+      </div>
+
+      <button>
+        Import bots meeting this criteria
+      </button>
     </div>
   );
 };
