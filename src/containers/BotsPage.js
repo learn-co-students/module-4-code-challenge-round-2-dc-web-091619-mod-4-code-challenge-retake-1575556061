@@ -6,56 +6,38 @@ import BotSelector from "../components/BotSelector";
 const apiAddress = "https://bot-battler-api.herokuapp.com/api/v1/bots";
 
 class BotsPage extends React.Component {
-  state = {
-    bots: [],
-    myArmy: []
-  };
+  constructor(){
+    super()
+    this.state = {
+      bots: [],
+      myArmy: []
+    }
+  }
 
   componentDidMount() {
     fetch(apiAddress)
       .then(r => r.json())
-      .then(bots => this.setState({ bots }));
+      .then(bots => this.setState({ bots: bots }));
   }
 
   addBotToArmy = id => {
-    const {
-      state: { myArmy }
-    } = this;
-    if (!myArmy.includes(id)) {
-      this.setState({ myArmy: [...myArmy, id] });
+    let bot = this.state.bots.find(bot => bot.id === id)
+    if (!this.state.myArmy.includes(bot)) {
+      this.setState({ myArmy: [...this.state.myArmy, bot] });
     }
   };
 
   removeBotToArmy = id => {
-    const {
-      state: { myArmy }
-    } = this;
-    const updatedArmy = myArmy.filter(botId => botId !== id);
-    if (myArmy.includes(id)) {
-      this.setState({ myArmy: updatedArmy });
-    }
+    let updatedArmy = this.state.myArmy.filter(bot => bot.id !== id);
+    this.setState({ myArmy: updatedArmy });
   };
 
-  myBots() {
-    const {
-      state: { bots, myArmy }
-    } = this;
-
-    const result = myArmy.map(botId => bots.find(bObj => bObj.id === botId));
-    return result;
-  }
-
   render() {
-    const {
-      state: { bots, botSelectorCriteria },
-      addBotToArmy,
-      removeBotToArmy
-    } = this;
     return (
       <div>
         <BotSelector />
-        <YourBotArmy bots={this.myBots()} removeBotToArmy={removeBotToArmy} />
-        <BotCollection bots={bots} addBotToArmy={addBotToArmy} />
+        <YourBotArmy bots={this.state.myArmy} removeBotToArmy={this.removeBotToArmy} />
+        <BotCollection bots={this.state.bots} addBotToArmy={this.addBotToArmy} />
       </div>
     );
   }
